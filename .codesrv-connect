@@ -1,0 +1,25 @@
+# Temp file created by /home/thing/bin/codesrv-connect: source this into your working
+#  shell like '. .codesrv-connect'
+# ( git hint: add ".codesrv-connect" to .gitignore )
+#
+
+cd "/c/projects/udemy-python"
+if ! test -S "/tmp/vscode-ipc-d0078dba-c4e2-4fdf-a32e-b584eefca2ef.sock"; then
+    echo "ERROR: /tmp/vscode-ipc-d0078dba-c4e2-4fdf-a32e-b584eefca2ef.sock not a socket. Dead session."
+else
+    export VSCODE_IPC_HOOK_CLI="/tmp/vscode-ipc-d0078dba-c4e2-4fdf-a32e-b584eefca2ef.sock"
+    if ! PATH="/home/thing/.vscode-server/bin/3c4e3df9e89829dce27b7b5c24508306b151f30d/bin:$PATH" codesrv-status; then
+        echo "ERROR: dead vscode connection."
+            read -n 1 -p "Delete dead context info /tmp/vscode-ipc-d0078dba-c4e2-4fdf-a32e-b584eefca2ef.sock ? (y/n): "
+            if [[ $REPLY =~ [yY] ]]; then
+                rm /tmp/vscode-ipc-d0078dba-c4e2-4fdf-a32e-b584eefca2ef.sock
+                rm .codesrv-connect
+            fi
+    else
+        alias code=/home/thing/.vscode-server/bin/3c4e3df9e89829dce27b7b5c24508306b151f30d/bin/code
+        PATH=$(pathadd "/home/thing/.vscode-server/bin/3c4e3df9e89829dce27b7b5c24508306b151f30d/bin")
+        echo "OK: the 'code' command will talk to socket \"/tmp/vscode-ipc-d0078dba-c4e2-4fdf-a32e-b584eefca2ef.sock\" now."
+        echo "You can use this command to connect other shells to this code server:"
+        echo "   cd /c/projects/udemy-python; codesrv"
+        fi
+fi
